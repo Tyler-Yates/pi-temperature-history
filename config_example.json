@@ -2,5 +2,6 @@
   "mongo_username": "",
   "mongo_password": "",
   "mongo_host": "",
-  "healthcheck_url": ""
+  "healthcheck_url": "",
+  "timezone": ""
 }
