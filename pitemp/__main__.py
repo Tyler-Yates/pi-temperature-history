@@ -45,14 +45,17 @@ def _ensure_mongo_setup(mongo_client: MongoClient) -> Collection:
 
     # Ensure collection is set up
     database = mongo_client[MONGO_DATABASE]
-    database.create_collection(
-        MONGO_COLLECTION,
-        timeseries={
-            "timeField": TIMESTAMP_FIELD,
-            "metaField": META_FIELD,
-            "granularity": MONGO_GRANULARITY,
-        }
-    )
+
+    existing_collection = database.get_collection(MONGO_COLLECTION)
+    if existing_collection is None:
+        database.create_collection(
+            MONGO_COLLECTION,
+            timeseries={
+                "timeField": TIMESTAMP_FIELD,
+                "metaField": META_FIELD,
+                "granularity": MONGO_GRANULARITY,
+            }
+        )
 
     collection = database[MONGO_COLLECTION]
     return collection
