@@ -69,6 +69,7 @@ def _ping_healthcheck():
 
     response = requests.get(healthcheck_url)
     response.raise_for_status()
+    print("Pinged healthcheck")
 
 
 def main():
