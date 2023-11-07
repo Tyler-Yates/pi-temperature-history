@@ -2,3 +2,4 @@ venv/
 .idea/
 *.pyc
 config.json
+log.txt
