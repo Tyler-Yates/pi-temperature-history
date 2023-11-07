@@ -4,6 +4,7 @@ import os
 import sys
 from pathlib import Path
 
+import requests
 from digitemp.device import TemperatureSensor
 from digitemp.master import UART_Adapter
 from pymongo import MongoClient
@@ -59,6 +60,15 @@ def _ensure_mongo_setup(mongo_client: MongoClient) -> Collection:
 
     collection = database[MONGO_COLLECTION]
     return collection
+
+
+def _ping_healthcheck():
+    with open(os.path.join(CURRENT_FILE_PATH, "..", "config.json"), mode="r") as config_file:
+        config = json.load(config_file)
+        healthcheck_url = config["healthcheck_url"]
+
+    response = requests.get(healthcheck_url)
+    response.raise_for_status()
 
 
 def main():
