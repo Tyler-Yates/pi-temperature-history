@@ -46,8 +46,8 @@ def _ensure_mongo_setup(mongo_client: MongoClient) -> Collection:
     # Ensure collection is set up
     database = mongo_client[MONGO_DATABASE]
 
-    existing_collection = database.get_collection(MONGO_COLLECTION)
-    if existing_collection is None:
+    collection_exists = MONGO_COLLECTION in list(x["name"] for x in database.list_collections())
+    if not collection_exists:
         database.create_collection(
             MONGO_COLLECTION,
             timeseries={
