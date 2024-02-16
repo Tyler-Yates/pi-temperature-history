@@ -19,7 +19,6 @@ USB_SENSOR = '/dev/ttyUSB0'
 MONGO_DATABASE = "sensors"
 MONGO_COLLECTION = "pitemp"
 MONGO_GRANULARITY = "minutes"
-SENSOR_ID = "pi"
 
 META_FIELD = "sensorId"
 TIMESTAMP_FIELD = "timestamp"
@@ -152,7 +151,7 @@ def main():
         entry = entries.pop()
         collection.insert_one({
             TIMESTAMP_FIELD: entry.timestamp,
-            META_FIELD: SENSOR_ID,
+            META_FIELD: CONFIG.sensor_id,
             TEMPERATURE_FIELD: entry.temp,
         })
         print("Inserted document to Mongo.")

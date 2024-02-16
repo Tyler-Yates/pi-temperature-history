@@ -11,6 +11,7 @@ class Config:
     mongo_username: str
     mongo_password: str
     mongo_host: str
+    sensor_id: str
     healthcheck_url: str
     timezone: str
 
@@ -22,6 +23,7 @@ def _get_config() -> Config:
             mongo_username=config["mongo_username"],
             mongo_password=config["mongo_password"],
             mongo_host=config["mongo_host"],
+            sensor_id=config["sensor_id"],
             healthcheck_url=config["healthcheck_url"],
             timezone=config["timezone"],
         )
