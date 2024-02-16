@@ -140,7 +140,7 @@ def _ping_healthcheck():
 
 def main():
     entries = _get_entries_to_save_in_database()
-    print(f"Saving {len(entries)} entries to the database: {entries}")
+    print(f"Saving {len(entries)} entries to the database with sensor ID {CONFIG.sensor_id!r}: {entries}")
     _save_entries(entries)
 
     mongo_client = _get_mongo_client()
