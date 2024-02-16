@@ -14,6 +14,7 @@ from pymongo.server_api import ServerApi
 
 from pitemp.config import _get_config
 from pitemp.db_entry import DbEntry
+from pitemp.util import convert_c_to_f
 
 USB_SENSOR = '/dev/ttyUSB0'
 MONGO_DATABASE = "sensors"
@@ -110,7 +111,7 @@ def _get_current_entry() -> DbEntry:
     sensor = TemperatureSensor(UART_Adapter(USB_SENSOR))
     sensor.info()
     temperature_c = sensor.get_temperature()
-    temperature_f = _convert_c_to_f(temperature_c)
+    temperature_f = convert_c_to_f(temperature_c)
     print(f"Temperature in F: {temperature_f}")
     return DbEntry(timestamp=datetime.datetime.now(TIMEZONE), temp=temperature_f)
 
@@ -160,10 +161,6 @@ def main():
         _save_entries(entries)
 
     _ping_healthcheck()
-
-
-def _convert_c_to_f(c: float) -> float:
-    return c * 9.0 / 5.0 + 32
 
 
 if __name__ == '__main__':
