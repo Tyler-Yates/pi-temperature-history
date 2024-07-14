@@ -110,11 +110,10 @@ def _get_unsaved_entries() -> List[DbEntry]:
 
 
 def _read_sensor() -> float:
-    sensor = TemperatureSensor(UART_Adapter(USB_SENSOR))
-    sensor.info()
-
     for i in range(5):
         try:
+            sensor = TemperatureSensor(UART_Adapter(USB_SENSOR))
+            sensor.info()
             return _read_sensor()
         except Exception as e:
             print(f"Exception trying to read sensor: {e}")
