@@ -3,5 +3,6 @@
   "mongo_password": "",
   "mongo_host": "",
   "healthcheck_url": "",
-  "timezone": ""
+  "timezone": "",
+  "uhubctl_port": ""
 }

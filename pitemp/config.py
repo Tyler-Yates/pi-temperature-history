@@ -2,6 +2,7 @@ import json
 import os
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Optional
 
 CURRENT_FILE_PATH = Path(__file__).parent.absolute()
 
@@ -14,6 +15,7 @@ class Config:
     sensor_id: str
     healthcheck_url: str
     timezone: str
+    uhubctl_port: Optional[str]
 
 
 def _get_config() -> Config:
@@ -26,4 +28,5 @@ def _get_config() -> Config:
             sensor_id=config["sensor_id"],
             healthcheck_url=config["healthcheck_url"],
             timezone=config["timezone"],
+            uhubctl_port=config.get("uhubctl_port", None),
         )

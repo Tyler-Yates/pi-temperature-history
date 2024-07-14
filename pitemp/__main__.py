@@ -1,7 +1,9 @@
 import datetime
 import os.path
 import pathlib
+import subprocess
 import sys
+from time import sleep
 from typing import List, Optional
 
 import pytz
@@ -107,10 +109,31 @@ def _get_unsaved_entries() -> List[DbEntry]:
     return unsaved_entries
 
 
-def _get_current_entry() -> DbEntry:
+def _read_sensor() -> float:
     sensor = TemperatureSensor(UART_Adapter(USB_SENSOR))
     sensor.info()
-    temperature_c = sensor.get_temperature()
+
+    for i in range(5):
+        try:
+            return _read_sensor()
+        except Exception as e:
+            print(f"Exception trying to read sensor: {e}")
+
+            # If the config tells us the USB port, try to reset it.
+            if CONFIG.uhubctl_port:
+                print("Attempting to reset sensor...")
+                subprocess.run(["sudo", "uhubctl", "-l", CONFIG.uhubctl_port, "-a", "cycle"])
+            else:
+                print("No uhubctl port specified. Not able to attempt to reset sensor.")
+
+            # Sleep a little bit to give the sensor time to recover
+            sleep(5)
+
+    raise ValueError("Cannot read sensor.")
+
+
+def _get_current_entry() -> DbEntry:
+    temperature_c = _read_sensor()
     temperature_f = convert_c_to_f(temperature_c)
     print(f"Temperature in F: {temperature_f}")
     return DbEntry(timestamp=datetime.datetime.now(TIMEZONE), temp=temperature_f)
