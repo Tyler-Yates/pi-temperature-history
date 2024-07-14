@@ -114,7 +114,7 @@ def _read_sensor() -> float:
         try:
             sensor = TemperatureSensor(UART_Adapter(USB_SENSOR))
             sensor.info()
-            return _read_sensor()
+            return sensor.get_temperature()
         except Exception as e:
             print(f"Exception trying to read sensor: {e}")
 
@@ -126,7 +126,7 @@ def _read_sensor() -> float:
                 print("No uhubctl port specified. Not able to attempt to reset sensor.")
 
             # Sleep a little bit to give the sensor time to recover
-            sleep(5)
+            sleep(10)
 
     raise ValueError("Cannot read sensor.")
 
